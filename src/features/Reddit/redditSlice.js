@@ -1,10 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchReddit = createAsyncThunk('reddit/fetchReddit', async () => {
-  const response = await fetch('https://www.reddit.com/r/popular.json');
-  const data = await response.json();
-  return data.data.children;
-});
+export const fetchPostsReddit = createAsyncThunk(
+  'reddit/fetchReddit',
+
+  async () => {
+    const response = await fetch('https://www.reddit.com/r/popular.json');
+    const json = await response.json();
+
+    //all the posts are stored in the data.children array and each post is an object
+    const posts = json.data.children.map((child) => child.data);
+    console.log(posts);
+    return posts;
+  }
+);
 
 const initialState = {
   posts: [],
@@ -27,16 +35,18 @@ const redditSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchReddit.pending, (state) => {
+      .addCase(fetchPostsReddit.pending, (state) => {
         state.loading = true;
         state.error = false;
       })
-      .addCase(fetchReddit.fulfilled, (state, action) => {
+      .addCase(fetchPostsReddit.fulfilled, (state, action) => {
+       
+        console.log(action.payload);
         state.posts = action.payload;
         state.loading = false;
         state.error = false;
       })
-      .addCase(fetchReddit.rejected, (state) => {
+      .addCase(fetchPostsReddit.rejected, (state) => {
         state.error = true;
         state.loading = false;
       });
@@ -46,8 +56,9 @@ const redditSlice = createSlice({
 export const { setSearchTerm, setSelectedSubreddit } = redditSlice.actions;
 export const selectRedditPosts = (state) => state.reddit.posts;
 export const selectRedditSearchTerm = (state) => state.reddit.searchTerm;
-export const selectRedditSelectedSubreddit = (state) => state.reddit.selectedSubreddit;
-export const selectRedditLoading = (state) => state.reddit.loading;
+export const selectRedditSelectedSubreddit = (state) =>
+  state.reddit.selectedSubreddit;
+export const isPostsLoading = (state) => state.reddit.loading;
 export const selectRedditError = (state) => state.reddit.error;
 
 export default redditSlice.reducer;

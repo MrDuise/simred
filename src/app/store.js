@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import votesReducer from '../features/votes/votesSlice';
+
+import redditReducer from '../features/Reddit/redditSlice';
 
 export const store = configureStore({
   reducer: {
-    votes: votesReducer,
+    reddit: redditReducer,
   },
 });
