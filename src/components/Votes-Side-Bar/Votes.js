@@ -23,16 +23,16 @@ const Votes = (props) => {
 
   return (
     <div>
-      <div className=" flex flex-col w-12 m-3">
+      <div className=" flex lg:flex-col  flex-row  w-12 m-3">
         <button
-          className="btn btn-square btn-outline"
+          className="btn btn-square btn-outline hover:bg-green-700"
           onClick={handleUpVote}
         >
          {upVote ? <FaArrowUp size={32} /> : <AiOutlineArrowUp size={32} />} 
         </button>
-        <p className="text-center text-black">{votes}</p>
+        <p className="text-center text-black p-1">{votes}</p>
         <button
-          className="btn btn-square btn-outline"
+          className="btn btn-square btn-outline hover:bg-red-700"
           onClick={handleDownVote}
         >
           {downVote ? <FaArrowDown size={32} /> : <AiOutlineArrowDown size={32} />} 

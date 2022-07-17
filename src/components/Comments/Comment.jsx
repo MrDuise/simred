@@ -5,8 +5,8 @@ import ReactMarkdown from 'react-markdown';
 const Comment = (props) => {
   const { comment } = props;
   return (
-    <div className="comment">
-      <div className="comment-metadata">
+    <div className="rounded-lg bg-blue-500 m-1 p-3 transition-shadow hover:shadow-md">
+      <div className="flex mb-2 items-center">
         <img
           src={`https://api.adorable.io/avatars/10/${comment.author}`}
           alt={`${comment.author} profile`}
@@ -16,7 +16,7 @@ const Comment = (props) => {
           {moment.unix(comment.created_utc).fromNow()}
         </p>
       </div>
-      <ReactMarkdown source={comment.body} />
+      <ReactMarkdown children={comment.body} />
     </div>
   );
 };

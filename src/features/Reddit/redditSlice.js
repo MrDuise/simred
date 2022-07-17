@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+export const API_ROOT = 'https://www.reddit.com';
+
 export const fetchPostsReddit = createAsyncThunk(
   'reddit/fetchReddit',
 
-  async () => {
-    const response = await fetch('https://www.reddit.com/r/popular.json');
+  async (subReddit = '/r/popular') => {
+    const response = await fetch(`https://www.reddit.com${subReddit}.json`);
     const json = await response.json();
 
     //all the posts are stored in the data.children array and each post is an object
-    const posts = json.data.children.map((child) => child.data);
-    console.log(posts);
-    return posts;
+    return json.data.children.map((child) => child.data);
   }
 );
 
@@ -40,8 +40,6 @@ const redditSlice = createSlice({
         state.error = false;
       })
       .addCase(fetchPostsReddit.fulfilled, (state, action) => {
-       
-        console.log(action.payload);
         state.posts = action.payload;
         state.loading = false;
         state.error = false;
